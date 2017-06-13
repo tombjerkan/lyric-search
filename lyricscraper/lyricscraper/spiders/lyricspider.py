@@ -1,6 +1,8 @@
 import scrapy
 import string
 
+from lyricscraper.items import SongItem
+
 class LyricSpider(scrapy.Spider):
     name = 'lyricspider'
 
@@ -37,7 +39,4 @@ class LyricSpider(scrapy.Spider):
         # Song header always of form "<song_name> Lyrics", so remove 'Lyrics'
         song_name = song_header[:-7]
 
-        yield {
-            'artist': response.meta['artist'],
-            'song': song_name,
-        }
+        yield SongItem(artist=response.meta['artist'], title=song_name)
