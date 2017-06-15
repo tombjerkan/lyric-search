@@ -15,9 +15,6 @@ def remove_lyrics_ending(title):
 
 
 class SongItemLoader(scrapy.loader.ItemLoader):
-    def __init__(self, **kwargs):
-        super().__init__(item=SongItem(), **kwargs)
-
     artist_in = MapCompose(lambda s: s.strip())
     artist_out = TakeFirst()
 

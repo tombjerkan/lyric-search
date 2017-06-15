@@ -1,7 +1,8 @@
+import copy
 import scrapy
 import string
 
-from lyricscraper.items import SongItemLoader
+from lyricscraper.items import SongItem, SongItemLoader
 
 class LyricSpider(scrapy.Spider):
     name = 'lyricspider'
@@ -20,13 +21,15 @@ class LyricSpider(scrapy.Spider):
             yield response.follow(next_page_link, callback=self.parse)
 
     def artist_parse(self, response):
-        artist_name = response.css('.artist-header h1 ::text').extract_first()
+        loader = SongItemLoader(SongItem(), response)
+        loader.add_css('artist', '.artist-header h1 ::text')
+        song_item = loader.load_item()
 
         song_selector = '#popular .songs-table a::attr(href)'
         song_links = response.css(song_selector).extract()
         for song_link in song_links:
             yield response.follow(song_link, callback=self.song_parse,
-                                  meta={'artist': artist_name})
+                                  meta={'song_item': copy.deepcopy(song_item)})
 
         next_page_link = response.css('.next::attr(href)').extract_first()
         if next_page_link:
@@ -35,7 +38,7 @@ class LyricSpider(scrapy.Spider):
     def song_parse(self, response):
         song_header_selector = '.lyrics header h1::text'
 
-        loader = SongItemLoader(response=response)
-        loader.add_value('artist', response.meta['artist'])
+        song_item = response.meta['song_item']
+        loader = SongItemLoader(item=song_item, response=response)
         loader.add_css('title', song_header_selector)
         yield loader.load_item()
