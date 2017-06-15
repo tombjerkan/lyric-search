@@ -34,12 +34,8 @@ class LyricSpider(scrapy.Spider):
 
     def song_parse(self, response):
         song_header_selector = '.lyrics header h1::text'
-        song_header = response.css(song_header_selector).extract_first().strip()
-
-        # Song header always of form "<song_name> Lyrics", so remove 'Lyrics'
-        song_name = song_header[:-7]
 
         loader = SongItemLoader(response=response)
         loader.add_value('artist', response.meta['artist'])
-        loader.add_value('title', song_name)
+        loader.add_css('title', song_header_selector)
         yield loader.load_item()
