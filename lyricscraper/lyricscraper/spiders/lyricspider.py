@@ -1,7 +1,7 @@
 import scrapy
 import string
 
-from lyricscraper.items import SongItem
+from lyricscraper.items import SongItemLoader
 
 class LyricSpider(scrapy.Spider):
     name = 'lyricspider'
@@ -39,4 +39,7 @@ class LyricSpider(scrapy.Spider):
         # Song header always of form "<song_name> Lyrics", so remove 'Lyrics'
         song_name = song_header[:-7]
 
-        yield SongItem(artist=response.meta['artist'], title=song_name)
+        loader = SongItemLoader(response=response)
+        loader.add_value('artist', response.meta['artist'])
+        loader.add_value('title', song_name)
+        yield loader.load_item()
