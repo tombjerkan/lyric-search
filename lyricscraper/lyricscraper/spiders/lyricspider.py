@@ -36,9 +36,7 @@ class LyricSpider(scrapy.Spider):
             yield response.follow(next_page_link, callback=self.artist_parse)
 
     def song_parse(self, response):
-        song_header_selector = '.lyrics header h1::text'
-
         song_item = response.meta['song_item']
         loader = SongItemLoader(item=song_item, response=response)
-        loader.add_css('title', song_header_selector)
+        loader.add_css('title', '.lyrics header h1::text')
         yield loader.load_item()
