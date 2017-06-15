@@ -8,3 +8,6 @@ SPIDER_MODULES = ['lyricscraper.spiders']
 NEWSPIDER_MODULE = 'lyricscraper.spiders'
 
 ROBOTSTXT_OBEY = True
+
+FEED_URI = 'songs.json'
+FEED_FORMAT = 'jsonlines'
