@@ -39,4 +39,5 @@ class LyricSpider(scrapy.Spider):
         song_item = response.meta['song_item']
         loader = SongItemLoader(item=song_item, response=response)
         loader.add_css('title', '.lyrics header h1::text')
+        loader.add_css('lyrics', '.verse::text')
         yield loader.load_item()
