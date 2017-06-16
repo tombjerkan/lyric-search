@@ -4,6 +4,7 @@ import string
 
 from lyricscraper.items import SongItem, SongItemLoader
 
+
 class LyricSpider(scrapy.Spider):
     name = 'lyricspider'
 
