@@ -17,5 +17,4 @@ pyvenv env
 Then install the necessary Python packages using the virtual environment.
 
 ```
-env/bin/pip3 install Scrapy
-env/bin/pip3 install langdetect
+env/bin/pip3 install -r requirements.txt
