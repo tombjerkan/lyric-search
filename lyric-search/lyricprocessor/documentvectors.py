@@ -3,25 +3,20 @@ import json
 import nltk
 
 
-def create_dictionary(song_file):
-    dictionary = gensim.corpora.Dictionary()
+class LyricCorpus:
+    def __init__(self, filename):
+        self.filename = filename
 
-    for song_json in song_file:
-        song = json.loads(song_json)
-        lyrics = song['lyrics']
-        lyric_tokens = nltk.word_tokenize(lyrics)
-        dictionary.add_documents([lyric_tokens])
-
-    return dictionary
+    def __iter__(self):
+        with open(self.filename) as song_file:
+            for song_json in song_file:
+                song = json.loads(song_json)
+                yield nltk.word_tokenize(song['lyrics'])
 
 
-def create_document_vectors(dictionary, song_file):
-    document_vectors = []
+def create_dictionary(lyric_corpus):
+    return gensim.corpora.Dictionary(lyric_corpus)
 
-    for song_json in song_file:
-        song = json.loads(song_json)
-        lyrics = song['lyrics']
-        lyric_tokens = nltk.word_tokenize(lyrics)
-        document_vectors.append(dictionary.doc2bow(lyric_tokens))
 
-    return document_vectors
+def create_document_vectors(dictionary, lyric_corpus):
+    return [dictionary.doc2bow(lyric_tokens) for lyric_tokens in lyric_corpus]
