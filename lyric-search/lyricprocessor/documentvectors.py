@@ -20,3 +20,13 @@ def create_dictionary(lyric_corpus):
 
 def create_document_vectors(dictionary, lyric_corpus):
     return [dictionary.doc2bow(lyric_tokens) for lyric_tokens in lyric_corpus]
+
+
+def transform_document_vectors(document_vectors, dictionary):
+    tfidf_model = gensim.models.TfidfModel(document_vectors)
+    tfidf_vectors = tfidf_model[document_vectors]
+
+    lsi_model = gensim.models.LsiModel(tfidf_vectors, id2word=dictionary)
+    lsi_vectors = lsi_model[tfidf_vectors]
+
+    return lsi_vectors
