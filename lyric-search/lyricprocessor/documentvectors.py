@@ -16,7 +16,7 @@ class LyricCorpus:
                 yield self.dictionary.doc2bow(lyric_tokens, allow_update=True)
 
 
-def transform_document_vectors(lyric_corpus):
+def lsi_vectors(lyric_corpus):
     tfidf_model = gensim.models.TfidfModel(lyric_corpus)
     tfidf_vectors = tfidf_model[lyric_corpus]
 
