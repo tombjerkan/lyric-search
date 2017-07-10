@@ -1,6 +1,12 @@
+import collections
 import gensim
 import json
 import nltk
+
+
+SongVector = collections.namedtuple(
+    'SongVector',
+    ['artist', 'title', 'vector'])
 
 
 class LyricCorpus:
@@ -13,15 +19,19 @@ class LyricCorpus:
             for song_json in song_file:
                 song = json.loads(song_json)
                 lyric_tokens = nltk.word_tokenize(song['lyrics'])
-                yield self.dictionary.doc2bow(lyric_tokens, allow_update=True)
+
+                yield SongVector(
+                    song['artist'],
+                    song['title'],
+                    self.dictionary.doc2bow(lyric_tokens, allow_update=True))
 
 
-def lsi_vectors(lyric_corpus):
-    tfidf_model = gensim.models.TfidfModel(lyric_corpus)
-    tfidf_vectors = tfidf_model[lyric_corpus]
+def lsi_vectors(corpus):
+    tfidf = gensim.models.TfidfModel(song.vector for song in corpus)
 
-    lsi_model = gensim.models.LsiModel(tfidf_vectors,
-                                       id2word=lyric_corpus.dictionary)
-    lsi_vectors = lsi_model[tfidf_vectors]
+    lsi = gensim.models.LsiModel(
+        (tfidf[song.vector] for song in corpus),
+        id2word=corpus.dictionary)
 
-    return lsi_vectors
+    return (SongVector(song.artist, song.title, lsi[tfidf[song.vector]])
+            for song in corpus)
