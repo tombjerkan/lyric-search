@@ -28,7 +28,7 @@ class LyricCorpus:
                 )
 
 
-def lsi_vectors(corpus):
+def document_vectors(corpus):
     tfidf = gensim.models.TfidfModel(song.vector for song in corpus)
 
     lsi = gensim.models.LsiModel(
