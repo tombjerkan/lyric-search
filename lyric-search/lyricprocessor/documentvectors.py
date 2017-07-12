@@ -37,4 +37,5 @@ def document_vectors(corpus):
     )
 
     for song in corpus:
-        yield SongVector(song.artist, song.title, lsi[tfidf[song.vector]])
+        lsi_vector = tuple(lsi[tfidf[song.vector]])
+        yield SongVector(song.artist, song.title, lsi_vector)
