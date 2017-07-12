@@ -22,8 +22,8 @@ class LyricCorpus:
                 lyric_tokens = nltk.word_tokenize(song['lyrics'])
 
                 yield SongVector(
-                    song['artist'],
-                    song['title'],
+                    song['artist'] if 'artist' in song else None,
+                    song['title'] if 'title' in song else None,
                     self.dictionary.doc2bow(lyric_tokens, allow_update=True)
                 )
 
