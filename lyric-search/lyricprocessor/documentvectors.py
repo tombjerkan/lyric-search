@@ -41,3 +41,14 @@ def document_vectors(corpus):
         lsi_vector = [topic_value for _, topic_value in lsi_vector]
         lsi_vector = tuple(lsi_vector)
         yield SongVector(song.artist, song.title, lsi_vector)
+
+
+def save_vectors(songs, file):
+    for song in songs:
+        song_json = json.dumps({
+            'artist': song.artist,
+            'title': song.title,
+            'vector': song.vector
+        })
+
+        file.write(song_json + '\n')
