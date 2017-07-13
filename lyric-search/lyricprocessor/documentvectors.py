@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
 import collections
 import gensim
 import json
 import nltk
+import sys
 
 
 SongVector = collections.namedtuple(
@@ -28,6 +31,17 @@ class LyricCorpus:
                 )
 
 
+def main():
+    lyrics_input_filename = sys.argv[1]
+    vectors_output_filename = sys.argv[2]
+
+    corpus = LyricCorpus(lyrics_input_filename)
+    vectors = document_vectors(corpus)
+
+    with open(vectors_output_filename, 'w') as output_file:
+        save_vectors(vectors, output_file)
+
+
 def document_vectors(corpus):
     tfidf = gensim.models.TfidfModel(song.vector for song in corpus)
 
@@ -52,3 +66,7 @@ def save_vectors(songs, file):
         })
 
         file.write(song_json + '\n')
+
+
+if __name__ == '__main__':
+    main()
