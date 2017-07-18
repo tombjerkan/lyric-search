@@ -2,3 +2,4 @@ Scrapy
 langdetect
 nltk
 gensim
+sqlalchemy
