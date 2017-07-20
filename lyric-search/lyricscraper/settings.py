@@ -11,8 +11,11 @@ ROBOTSTXT_OBEY = True
 
 ITEM_PIPELINES = {
     'lyricscraper.pipelines.LyricsPipeline': 0,
-    'lyricscraper.pipelines.LanguagePipeline': 1
+    'lyricscraper.pipelines.LanguagePipeline': 1,
+    'lyricscraper.pipelines.DatabasePipeline': 2
 }
 
 FEED_URI = 'songs.json'
 FEED_FORMAT = 'jsonlines'
+
+DB_CONNECTION_STRING = 'sqlite:///songs.db'
