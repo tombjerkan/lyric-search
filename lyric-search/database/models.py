@@ -1,3 +1,4 @@
+import numpy
 import sqlalchemy
 import sqlalchemy.ext.declarative
 
@@ -13,10 +14,18 @@ class Song(Base):
     artist = sqlalchemy.Column(sqlalchemy.String(100))
     lyrics = sqlalchemy.Column(sqlalchemy.String(2000))
 
-    vector = sqlalchemy.orm.relationship(
+    _vector = sqlalchemy.orm.relationship(
         'VectorFeature',
         order_by=lambda: VectorFeature.feature_index
     )
+
+    @property
+    def vector(self):
+        return [
+            (numpy.int64(feature.feature_index),
+             numpy.float64(feature.feature_value))
+            for feature in self._vector
+        ]
 
 
 class VectorFeature(Base):
