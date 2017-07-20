@@ -47,8 +47,8 @@ def save_vectors(vectors, connection_string):
 
                 feature = database.models.VectorFeature(
                     song_id=song_index,
-                    feature_index=int(feature_index),
-                    feature_value=float(feature_value)
+                    index=int(feature_index),
+                    value=float(feature_value)
                 )
 
                 session.add(feature)

@@ -16,16 +16,13 @@ class Song(Base):
 
     _vector = sqlalchemy.orm.relationship(
         'VectorFeature',
-        order_by=lambda: VectorFeature.feature_index
+        order_by=lambda: VectorFeature.index
     )
 
     @property
     def vector(self):
-        return [
-            (numpy.int64(feature.feature_index),
-             numpy.float64(feature.feature_value))
-            for feature in self._vector
-        ]
+        return [(numpy.int64(feature.index), numpy.float64(feature.value))
+                for feature in self._vector]
 
 
 class VectorFeature(Base):
@@ -37,5 +34,5 @@ class VectorFeature(Base):
         primary_key=True
     )
 
-    feature_index = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    feature_value = sqlalchemy.Column(sqlalchemy.Float)
+    index = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    value = sqlalchemy.Column(sqlalchemy.Float)
