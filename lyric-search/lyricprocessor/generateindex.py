@@ -1,8 +1,8 @@
 import gensim
 import sys
 
-from lyricprocessor.documentvectors import LyricCorpus
-from lyricprocessor.documentvectors import TfidfLsiModel
+from lyricprocessor import LyricCorpus
+from lyricprocessor import TfidfLsiModel
 
 
 def main():
