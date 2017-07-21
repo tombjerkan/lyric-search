@@ -2,6 +2,7 @@
 
 import gensim
 import nltk
+import sqlalchemy
 import sys
 
 import database.tools
@@ -21,6 +22,14 @@ class LyricCorpus:
             for song in song_query:
                 lyric_tokens = nltk.word_tokenize(song.lyrics)
                 yield self.dictionary.doc2bow(lyric_tokens, allow_update=True)
+
+    def __len__(self):
+        with database.tools.session_scope(self.connection_string) as session:
+            count_query = session.query(
+                sqlalchemy.func.count(database.models.Song.id)
+            )
+
+            return count_query.scalar()
 
 
 class TfidfLsiModel:
