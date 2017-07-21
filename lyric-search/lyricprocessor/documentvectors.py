@@ -36,14 +36,9 @@ def main():
     db_connection_string = sys.argv[1]
 
     corpus = LyricCorpus(db_connection_string)
-    vectors = document_vectors(corpus)
-    save_vectors(vectors, db_connection_string)
-
-
-def document_vectors(corpus):
     model = TfidfLsiModel(corpus)
-    for lyrics in corpus:
-        yield model[lyrics]
+    vectors = model[corpus]
+    save_vectors(vectors, db_connection_string)
 
 
 def save_vectors(vectors, connection_string):
