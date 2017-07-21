@@ -23,6 +23,15 @@ class LyricCorpus:
                 yield self.dictionary.doc2bow(lyric_tokens, allow_update=True)
 
 
+class TfidfLsiModel:
+    def __init__(self, corpus):
+        self.tfidf = gensim.models.TfidfModel(corpus)
+        self.lsi = gensim.models.LsiModel(corpus, id2word=corpus.dictionary)
+
+    def __getitem__(self, item):
+        return self.lsi[self.tfidf[item]]
+
+
 def main():
     db_connection_string = sys.argv[1]
 
@@ -32,11 +41,9 @@ def main():
 
 
 def document_vectors(corpus):
-    tfidf = gensim.models.TfidfModel(corpus)
-    lsi = gensim.models.LsiModel(corpus, id2word=corpus.dictionary)
-
+    model = TfidfLsiModel(corpus)
     for lyrics in corpus:
-        yield lsi[tfidf[lyrics]]
+        yield model[lyrics]
 
 
 def save_vectors(vectors, connection_string):
