@@ -40,14 +40,26 @@ class TfidfLsiModel:
     def __getitem__(self, item):
         return self.lsi[self.tfidf[item]]
 
+    @property
+    def num_topics(self):
+        return self.lsi.num_topics
+
 
 def main():
     db_connection_string = sys.argv[1]
+    index_filename = sys.argv[2]
 
     corpus = LyricCorpus(db_connection_string)
     model = TfidfLsiModel(corpus)
     vectors = model[corpus]
     save_vectors(vectors, db_connection_string)
+
+    index = gensim.similarities.Similarity(
+        '/tmp/lyric-search.index',
+        vectors,
+        model.num_topics
+    )
+    index.save(index_filename)
 
 
 def save_vectors(vectors, connection_string):
