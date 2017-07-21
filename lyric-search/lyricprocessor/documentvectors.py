@@ -3,7 +3,6 @@
 import gensim
 import nltk
 import sqlalchemy
-import sys
 
 import database.tools
 import database.models
@@ -58,27 +57,3 @@ class TfidfLsiModel:
         model.tfidf = gensim.models.TfidfModel.load(tfidf_filename)
         model.lsi = gensim.models.LsiModel.load(lsi_filename)
         return model
-
-
-def main():
-    db_connection_string = sys.argv[1]
-    tfidf_filename = sys.argv[2]
-    lsi_filename = sys.argv[3]
-    index_filename = sys.argv[4]
-
-    corpus = LyricCorpus(db_connection_string)
-
-    model = TfidfLsiModel.load(tfidf_filename, lsi_filename)
-
-    vectors = model[corpus]
-
-    index = gensim.similarities.Similarity(
-        '/tmp/lyric-search.index',
-        vectors,
-        model.num_topics
-    )
-    index.save(index_filename)
-
-
-if __name__ == '__main__':
-    main()
