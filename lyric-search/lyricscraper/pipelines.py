@@ -22,15 +22,8 @@ class LanguagePipeline:
 
 
 class DatabasePipeline:
-    def __init__(self, connection_string):
-        self.connection_string = connection_string
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(crawler.settings.get('DB_CONNECTION_STRING'))
-
     def process_item(self, item, spider):
-        with database.tools.session_scope(self.connection_string) as session:
+        with database.tools.session_scope() as session:
             song = database.models.Song(
                 artist = item['artist'],
                 title = item['title'],

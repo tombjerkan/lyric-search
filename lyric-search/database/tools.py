@@ -3,15 +3,18 @@ import sqlalchemy
 
 from . import models
 
+from configobj import ConfigObj
+config = ConfigObj('settings.cfg')
 
-def create_database(database_file):
-    engine = sqlalchemy.create_engine(database_file)
+
+def create_database():
+    engine = sqlalchemy.create_engine(config['DB_CONNECTION_STRING'])
     models.Base.metadata.create_all(engine)
 
 
 @contextlib.contextmanager
-def session_scope(database_file):
-    engine = sqlalchemy.create_engine(database_file)
+def session_scope():
+    engine = sqlalchemy.create_engine(config['DB_CONNECTION_STRING'])
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
     session = Session()
 
