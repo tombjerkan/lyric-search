@@ -27,13 +27,9 @@ def similarity_to_song(song_id, index_filename, num_best=10):
     return similarities
 
 
-def similarity_to_query(query_string,
-                        tfidf_filename,
-                        lsi_filename,
-                        index_filename,
-                        num_best=10):
+def similarity_to_query(query_string, index_filename, num_best=10):
     dictionary = gensim.corpora.Dictionary.load(config['DICTIONARY_FILENAME'])
-    model = TfidfLsiModel.load(tfidf_filename, lsi_filename)
+    model = TfidfLsiModel.load()
 
     query_tokens = nltk.word_tokenize(query_string)
     query_bow = dictionary.doc2bow(query_tokens)
