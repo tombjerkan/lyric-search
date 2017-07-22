@@ -6,13 +6,11 @@ from lyricprocessor import TfidfLsiModel
 
 
 def main():
-    dictionary_filename = sys.argv[1]
-    tfidf_filename = sys.argv[2]
-    lsi_filename = sys.argv[3]
-    index_filename = sys.argv[4]
+    tfidf_filename = sys.argv[1]
+    lsi_filename = sys.argv[2]
+    index_filename = sys.argv[3]
 
-    dictionary = gensim.corpora.Dictionary.load(dictionary_filename)
-    corpus = LyricCorpus(dictionary)
+    corpus = LyricCorpus()
     model = TfidfLsiModel.load(tfidf_filename, lsi_filename)
     index = gensim.similarities.Similarity(
         '/tmp/lyric-search.index',

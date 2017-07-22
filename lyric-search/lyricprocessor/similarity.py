@@ -3,6 +3,9 @@ import nltk
 
 from lyricprocessor import TfidfLsiModel
 
+from configobj import ConfigObj
+config = ConfigObj('settings.cfg')
+
 
 def similarity_to_song(song_id, index_filename, num_best=10):
     index = gensim.similarities.Similarity.load(index_filename)
@@ -25,12 +28,11 @@ def similarity_to_song(song_id, index_filename, num_best=10):
 
 
 def similarity_to_query(query_string,
-                        dictionary_filename,
                         tfidf_filename,
                         lsi_filename,
                         index_filename,
                         num_best=10):
-    dictionary = gensim.corpora.Dictionary.load(dictionary_filename)
+    dictionary = gensim.corpora.Dictionary.load(config['DICTIONARY_FILENAME'])
     model = TfidfLsiModel.load(tfidf_filename, lsi_filename)
 
     query_tokens = nltk.word_tokenize(query_string)

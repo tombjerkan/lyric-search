@@ -6,12 +6,10 @@ from lyricprocessor import TfidfLsiModel
 
 
 def main():
-    dictionary_filename = sys.argv[1]
-    tfidf_filename = sys.argv[2]
-    lsi_filename = sys.argv[3]
+    tfidf_filename = sys.argv[1]
+    lsi_filename = sys.argv[2]
 
-    dictionary = gensim.corpora.Dictionary.load(dictionary_filename)
-    corpus = LyricCorpus(dictionary)
+    corpus = LyricCorpus()
     model = TfidfLsiModel(corpus)
     model.save(tfidf_filename, lsi_filename)
 

@@ -5,6 +5,9 @@ import sqlalchemy
 import database.tools
 import database.models
 
+from configobj import ConfigObj
+config = ConfigObj('settings.cfg')
+
 
 def database_lyrics():
     with database.tools.session_scope() as session:
@@ -16,8 +19,10 @@ def database_lyrics():
 
 
 class LyricCorpus:
-    def __init__(self, dictionary):
-        self.dictionary = dictionary
+    def __init__(self):
+        self.dictionary = gensim.corpora.Dictionary.load(
+            config['DICTIONARY_FILENAME']
+        )
 
     def __iter__(self):
         for lyrics in database_lyrics():
