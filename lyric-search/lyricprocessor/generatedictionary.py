@@ -1,6 +1,5 @@
 import gensim
 import nltk
-import sys
 
 from lyricprocessor.lyriccorpus import database_lyrics
 

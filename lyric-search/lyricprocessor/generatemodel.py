@@ -1,5 +1,3 @@
-import gensim
-
 from lyricprocessor import LyricCorpus
 from lyricprocessor import TfidfLsiModel
 
