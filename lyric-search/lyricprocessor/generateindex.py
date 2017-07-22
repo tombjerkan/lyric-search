@@ -1,13 +1,13 @@
 import gensim
-import sys
 
 from lyricprocessor import LyricCorpus
 from lyricprocessor import TfidfLsiModel
 
+from configobj import ConfigObj
+config = ConfigObj('settings.cfg')
+
 
 def main():
-    index_filename = sys.argv[1]
-
     corpus = LyricCorpus()
     model = TfidfLsiModel.load()
     index = gensim.similarities.Similarity(
@@ -15,7 +15,7 @@ def main():
         model[corpus],
         model.num_topics
     )
-    index.save(index_filename)
+    index.save(config['INDEX_FILENAME'])
 
 
 if __name__ == '__main__':
