@@ -5,9 +5,12 @@ import sqlalchemy
 import database.tools
 import database.models
 
+from configobj import ConfigObj
+config = ConfigObj('settings.cfg')
 
-def database_lyrics(connection_string):
-    with database.tools.session_scope(connection_string) as session:
+
+def database_lyrics():
+    with database.tools.session_scope() as session:
         song_query = session.query(database.models.Song)
         song_query = song_query.order_by(database.models.Song.id)
 
@@ -16,17 +19,18 @@ def database_lyrics(connection_string):
 
 
 class LyricCorpus:
-    def __init__(self, connection_string, dictionary):
-        self.connection_string = connection_string
-        self.dictionary = dictionary
+    def __init__(self):
+        self.dictionary = gensim.corpora.Dictionary.load(
+            config['DICTIONARY_FILENAME']
+        )
 
     def __iter__(self):
-        for lyrics in database_lyrics(self.connection_string):
+        for lyrics in database_lyrics():
             lyric_tokens = nltk.word_tokenize(lyrics)
             yield self.dictionary.doc2bow(lyric_tokens)
 
     def __len__(self):
-        with database.tools.session_scope(self.connection_string) as session:
+        with database.tools.session_scope() as session:
             count_query = session.query(
                 sqlalchemy.func.count(database.models.Song.id)
             )

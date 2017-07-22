@@ -1,19 +1,18 @@
 import gensim
 import nltk
-import sys
 
 from lyricprocessor.lyriccorpus import database_lyrics
 
+from configobj import ConfigObj
+config = ConfigObj('settings.cfg')
+
 
 def main():
-    db_connection_string = sys.argv[1]
-    dictionary_filename = sys.argv[2]
-
     dictionary = gensim.corpora.Dictionary(
         nltk.word_tokenize(lyrics)
-        for lyrics in database_lyrics(db_connection_string)
+        for lyrics in database_lyrics()
     )
-    dictionary.save(dictionary_filename)
+    dictionary.save(config['DICTIONARY_FILENAME'])
 
 
 if __name__ == '__main__':

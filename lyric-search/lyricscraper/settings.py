@@ -17,5 +17,3 @@ ITEM_PIPELINES = {
 
 FEED_URI = 'songs.json'
 FEED_FORMAT = 'jsonlines'
-
-DB_CONNECTION_STRING = 'sqlite:///songs.db'
