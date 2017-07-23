@@ -4,7 +4,7 @@ from lyricprocessor import LyricCorpus
 from lyricprocessor import TfidfLsiModel
 
 from configobj import ConfigObj
-config = ConfigObj('settings.cfg')
+_config = ConfigObj('settings.cfg')
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
         model[corpus],
         model.num_topics
     )
-    index.save(config['INDEX_FILENAME'])
+    index.save(_config['INDEX_FILENAME'])
 
 
 if __name__ == '__main__':
