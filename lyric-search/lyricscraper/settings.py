@@ -14,6 +14,3 @@ ITEM_PIPELINES = {
     'lyricscraper.pipelines.LanguagePipeline': 1,
     'lyricscraper.pipelines.DatabasePipeline': 2
 }
-
-FEED_URI = 'songs.json'
-FEED_FORMAT = 'jsonlines'
