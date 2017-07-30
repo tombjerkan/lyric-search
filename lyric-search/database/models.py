@@ -7,6 +7,8 @@ Base = sqlalchemy.ext.declarative.declarative_base()
 
 
 class Song(Base):
+    """Model for a song in the database."""
+
     __tablename__ = 'Song'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
