@@ -1,7 +1,7 @@
 import gensim
 
 from configobj import ConfigObj
-config = ConfigObj('settings.cfg')
+_config = ConfigObj('settings.cfg')
 
 
 class TfidfLsiModel:
@@ -21,16 +21,16 @@ class TfidfLsiModel:
         return self.lsi.num_topics
 
     def save(self):
-        self.tfidf.save(config['TFIDF_MODEL_FILENAME'])
-        self.lsi.save(config['LSI_MODEL_FILENAME'])
+        self.tfidf.save(_config['TFIDF_MODEL_FILENAME'])
+        self.lsi.save(_config['LSI_MODEL_FILENAME'])
 
     @classmethod
     def load(cls):
         model = TfidfLsiModel()
         model.tfidf = gensim.models.TfidfModel.load(
-            config['TFIDF_MODEL_FILENAME']
+            _config['TFIDF_MODEL_FILENAME']
         )
         model.lsi = gensim.models.LsiModel.load(
-            config['LSI_MODEL_FILENAME']
+            _config['LSI_MODEL_FILENAME']
         )
         return model

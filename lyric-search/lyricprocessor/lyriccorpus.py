@@ -6,7 +6,7 @@ import database.tools
 import database.models
 
 from configobj import ConfigObj
-config = ConfigObj('settings.cfg')
+_config = ConfigObj('settings.cfg')
 
 
 def database_lyrics():
@@ -21,7 +21,7 @@ def database_lyrics():
 class LyricCorpus:
     def __init__(self):
         self.dictionary = gensim.corpora.Dictionary.load(
-            config['DICTIONARY_FILENAME']
+            _config['DICTIONARY_FILENAME']
         )
 
     def __iter__(self):

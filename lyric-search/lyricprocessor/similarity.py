@@ -4,11 +4,11 @@ import nltk
 from lyricprocessor import TfidfLsiModel
 
 from configobj import ConfigObj
-config = ConfigObj('settings.cfg')
+_config = ConfigObj('settings.cfg')
 
 
 def similarity_to_song(song_id, num_best=10):
-    index = gensim.similarities.Similarity.load(config['INDEX_FILENAME'])
+    index = gensim.similarities.Similarity.load(_config['INDEX_FILENAME'])
 
     # Add 1 as most similar list will include song itself which will then be
     # removed to give desired number of best
@@ -28,14 +28,14 @@ def similarity_to_song(song_id, num_best=10):
 
 
 def similarity_to_query(query_string, num_best=10):
-    dictionary = gensim.corpora.Dictionary.load(config['DICTIONARY_FILENAME'])
+    dictionary = gensim.corpora.Dictionary.load(_config['DICTIONARY_FILENAME'])
     model = TfidfLsiModel.load()
 
     query_tokens = nltk.word_tokenize(query_string)
     query_bow = dictionary.doc2bow(query_tokens)
     query_vector = model[query_bow]
 
-    index = gensim.similarities.Similarity.load(config['INDEX_FILENAME'])
+    index = gensim.similarities.Similarity.load(_config['INDEX_FILENAME'])
     index.num_best = num_best
     similarities = index[query_vector]
 

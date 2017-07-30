@@ -4,7 +4,7 @@ import nltk
 from lyricprocessor.lyriccorpus import database_lyrics
 
 from configobj import ConfigObj
-config = ConfigObj('settings.cfg')
+_config = ConfigObj('settings.cfg')
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
         nltk.word_tokenize(lyrics)
         for lyrics in database_lyrics()
     )
-    dictionary.save(config['DICTIONARY_FILENAME'])
+    dictionary.save(_config['DICTIONARY_FILENAME'])
 
 
 if __name__ == '__main__':
