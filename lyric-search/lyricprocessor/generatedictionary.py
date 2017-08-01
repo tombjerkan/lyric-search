@@ -1,3 +1,11 @@
+"""Generates a dictionary of words from song lyrics.
+
+Generates a Gensim Dictionary object that maps word strings to ID values to be
+used throughout the lyric processing. The lyrics are taken from the database
+and the resulting dictionary is saved to the dictionary file, both specified
+in the config file.
+"""
+
 import gensim
 import nltk
 
