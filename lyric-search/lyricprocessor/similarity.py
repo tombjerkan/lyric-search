@@ -22,7 +22,7 @@ def _song_from_gensim_index(gensim_index):
         return song
 
 
-def similarity_to_song(song_id, num_best=10):
+def similarity_to_song(song, num_best=10):
     """Returns the songs with the most similar lyrics to the given song.
 
     Returns a list of tuples (song, similarity) where the similarity is a
@@ -35,8 +35,8 @@ def similarity_to_song(song_id, num_best=10):
     # removed to give desired number of best
     index.num_best = num_best + 1
 
-    # Subtract 1 from song_id as database starts mapping at 1, but gensim at 0
-    similarities = index.similarity_by_id(song_id - 1)
+    # Subtract 1 from song ID as database starts mapping at 1, but gensim at 0
+    similarities = index.similarity_by_id(song.id - 1)
 
     # Remove song itself (which will be most similar)
     del similarities[0]
