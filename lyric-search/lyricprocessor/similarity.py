@@ -1,20 +1,33 @@
 import gensim
 import nltk
 
+import database.tools
+import database.models
 from lyricprocessor import TfidfLsiModel
 
 from configobj import ConfigObj
 _config = ConfigObj('settings.cfg')
 
 
+def _song_from_gensim_index(gensim_index):
+    with database.tools.session_scope() as session:
+        song_query = session.query(database.models.Song)
+
+        # Gensim index is Numpy int so must be converted back to Python int
+        song_query = song_query.filter(
+            database.models.Song.id == int(gensim_index) + 1
+        )
+
+        song = song_query.scalar()
+        return song
+
+
 def similarity_to_song(song_id, num_best=10):
     """Returns the songs with the most similar lyrics to the given song.
 
-    Returns a list of tuples (song ID, similarity) where the similarity is
-    a float value between -1 and 1. The list is ordered from most similar to
+    Returns a list of tuples (song, similarity) where the similarity is a
+    float value between -1 and 1. The list is ordered from most similar to
     least. The number of songs in the list is specified by num_best.
-
-    The song IDs used refer to the ID stored in the database.
     """
     index = gensim.similarities.Similarity.load(_config['INDEX_FILENAME'])
 
@@ -28,11 +41,10 @@ def similarity_to_song(song_id, num_best=10):
     # Remove song itself (which will be most similar)
     del similarities[0]
 
-    # Add 1 to all gensim song indexes to give their database ids
-    similarities = [(index + 1, similarity)
-                    for (index, similarity) in similarities]
+    songs = [(_song_from_gensim_index(song_gensim_index), song_similarity)
+             for (song_gensim_index, song_similarity) in similarities]
 
-    return similarities
+    return songs
 
 
 def similarity_to_query(query_string, num_best=10):
@@ -56,8 +68,7 @@ def similarity_to_query(query_string, num_best=10):
     index.num_best = num_best
     similarities = index[query_vector]
 
-    # Add 1 to all gensim song indexes to give their database ids
-    similarities = [(index + 1, similarity)
-                    for (index, similarity) in similarities]
+    songs = [(_song_from_gensim_index(song_gensim_index), song_similarity)
+             for (song_gensim_index, song_similarity) in similarities]
 
-    return similarities
+    return songs
