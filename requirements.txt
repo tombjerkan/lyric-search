@@ -3,3 +3,4 @@ langdetect
 nltk
 gensim
 sqlalchemy
+flask
