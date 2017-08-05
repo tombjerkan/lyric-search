@@ -2,7 +2,7 @@ import flask
 
 from lyricprocessor.similarity import similarity_to_query
 from webapp import app
-from .forms import QueryForm
+from .forms import QueryForm, SongForm
 
 
 @app.route('/')
@@ -26,6 +26,7 @@ def query():
         return flask.render_template('querysimilarity.html', form=form)
 
 
-@app.route('/songsimilarity')
+@app.route('/songsimilarity', methods=['GET', 'POST'])
 def song():
-    return flask.render_template('songsimilarity.html')
+    form = SongForm()
+    return flask.render_template('songsimilarity.html', form=form)

@@ -4,5 +4,12 @@
   </head>
   <body>
     <h1>Similarity to Song</h1>
+
+    <form action="" method="post" name="song">
+      {{ form.hidden_tag() }}
+      Title: {{ form.song_title(size=40) }}<br />
+      Artist: {{ form.artist(size=40) }}<br />
+      <input type="submit" value="Search">
+    </form>
   </body>
 </html>
