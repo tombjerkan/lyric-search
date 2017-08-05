@@ -10,5 +10,24 @@
       {{ form.query(size=80) }}
       <input type="submit" value="Query">
     </form>
+    <br />
+
+    {% if songs %}
+      <table>
+        <tr>
+          <th>Song Title</th>
+          <th>Artist</th>
+          <th>Similarity Index</th>
+        </tr>
+
+        {% for song, similarity in songs %}
+        <tr>
+          <td>{{ song.title }}</td>
+          <td>{{ song.artist }}</td>
+          <td>{{ similarity }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
   </body>
 </html>
