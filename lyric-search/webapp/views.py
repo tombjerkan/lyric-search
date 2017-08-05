@@ -1,6 +1,8 @@
 import flask
 
-from lyricprocessor.similarity import similarity_to_query
+from database.tools import session_scope
+from database.models import Song
+from lyricprocessor.similarity import similarity_to_query, similarity_to_song
 from webapp import app
 from .forms import QueryForm, SongForm
 
@@ -29,4 +31,19 @@ def query():
 @app.route('/songsimilarity', methods=['GET', 'POST'])
 def song():
     form = SongForm()
-    return flask.render_template('songsimilarity.html', form=form)
+
+    if form.validate_on_submit():
+        with session_scope() as session:
+            song_query = session.query(Song)
+            song_query = song_query.filter(Song.title == form.song_title.data)
+            song_query = song_query.filter(Song.artist == form.artist.data)
+            song = song_query.first()
+
+        similar_songs = similarity_to_song(song)
+        return flask.render_template(
+            'songsimilarity.html',
+            form=form,
+            songs=similar_songs
+        )
+    else:
+        return flask.render_template('songsimilarity.html', form=form)
