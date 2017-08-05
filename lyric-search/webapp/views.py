@@ -24,3 +24,8 @@ def query():
         )
     else:
         return flask.render_template('querysimilarity.html', form=form)
+
+
+@app.route('/songsimilarity')
+def song():
+    return flask.render_template('songsimilarity.html')
