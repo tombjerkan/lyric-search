@@ -1,6 +1,7 @@
 import flask
 
 from webapp import app
+from .forms import QueryForm
 
 
 @app.route('/')
@@ -11,4 +12,5 @@ def index():
 
 @app.route('/querysimilarity', methods=['GET', 'POST'])
 def query():
-    return flask.render_template('querysimilarity.html')
+    form = QueryForm()
+    return flask.render_template('querysimilarity.html', form=form)
