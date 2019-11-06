@@ -10,17 +10,16 @@ class SongItem(scrapy.Item):
     lyrics = scrapy.Field()
 
 
-def remove_lyrics_ending(title):
-    """Removes the suffix from the title of lyrics.
+def remove_lyrics_ending(text):
+    """Removes the suffix from the title of artists and songs.
 
-    Song titles on MetroLyrics are of the form 'X Lyrics', where X is the name
-    of the song. To get just the song name, the ' Lyrics' suffix must be
-    removed.
+    Artist and song titles on MetroLyrics are of the form 'X Lyrics', where X
+    is the name of the artist or song, so this ending must be removed.
     """
-    if title[-len(' Lyrics'):] == ' Lyrics':
-        return title[:-len(' Lyrics')]
+    if text[-len(' Lyrics'):] == ' Lyrics':
+        return text[:-len(' Lyrics')]
     else:
-        return title
+        return text
 
 
 class SongItemLoader(scrapy.loader.ItemLoader):
@@ -30,7 +29,7 @@ class SongItemLoader(scrapy.loader.ItemLoader):
     being used.
     """
 
-    artist_in = MapCompose(lambda s: s.strip())
+    artist_in = MapCompose(lambda s: s.strip(), remove_lyrics_ending)
     artist_out = TakeFirst()
 
     title_in = MapCompose(lambda s: s.strip(), remove_lyrics_ending)

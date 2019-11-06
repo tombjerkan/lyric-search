@@ -47,6 +47,7 @@ class LyricSpider(scrapy.Spider):
         """
         loader = SongItemLoader(SongItem(), response)
         loader.add_css('artist', '.artist-header h1 ::text')
+        loader.add_css('title', '#popular .songs-table a::text')
         song_item = loader.load_item()
 
         song_selector = '#popular .songs-table a::attr(href)'
@@ -63,6 +64,5 @@ class LyricSpider(scrapy.Spider):
         """Extracts the song title and lyrics from a song's page."""
         song_item = response.meta['song_item']
         loader = SongItemLoader(item=song_item, response=response)
-        loader.add_css('title', '.banner-heading h1::text')
         loader.add_css('lyrics', '.verse::text')
         yield loader.load_item()
